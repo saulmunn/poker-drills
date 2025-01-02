@@ -86,7 +86,7 @@ export default function MainGame() {
     const newDeck = [...FULL_DECK]
     shuffle(newDeck)
     const pocket = drawCards(newDeck, 2)
-    const community = drawCards(newDeck, 3)
+    const community = drawCards(newDeck, 5)
     const parsed = [...pocket, ...community].map(parseCard)
     const detected = detectAnyExistingHands(parsed)
 
@@ -111,16 +111,16 @@ export default function MainGame() {
         generateNewProblem()
       }, 500)
     } else {
-      setFeedback(`Wrong. The correct answer is "${correctHand}".`)
+      setFeedback(`Wrong. The correct answer is "${correctHand}". (Moving on in 8s.)`)
       setTimeout(() => {
         generateNewProblem()
-      }, 1500)
+      }, 8000)
     }
   }
 
   return (
     <div className="h-screen overflow-hidden bg-gray-100 flex items-center justify-center px-4 font-[Arial]">
-      <div className="relative max-w-md w-full bg-white shadow-md rounded p-6 text-center">
+      <div className="relative max-w-full w-full bg-white shadow-md rounded-2xl p-10 text-center">
         <h1 className="text-3xl font-bold mb-4 text-gray-800">
           What's the best hand on the current board?
         </h1>
