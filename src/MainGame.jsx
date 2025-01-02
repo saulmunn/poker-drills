@@ -122,7 +122,7 @@ export default function MainGame() {
     <div className="h-screen overflow-hidden bg-gray-100 flex items-center justify-center px-4 font-[Arial]">
       <div className="relative max-w-md w-full bg-white shadow-md rounded p-6 text-center">
         <h1 className="text-3xl font-bold mb-4 text-gray-800">
-          What's the best hand on the board?
+          What's the best hand on the current board?
         </h1>
 
         {/* Community cards on top */}
@@ -133,7 +133,7 @@ export default function MainGame() {
             return (
               <img
                 key={card}
-                src={`/src/assets/card-svgs/${getCardAssetName(parsed)}`}
+                src={`/card-svgs/${getCardAssetName(parsed)}`}
                 alt={card}
                 className="w-28 h-auto" // Increased size from w-20 to w-28
               />
@@ -149,7 +149,7 @@ export default function MainGame() {
             return (
               <img
                 key={card}
-                src={`/src/assets/card-svgs/${getCardAssetName(parsed)}`}
+                src={`/card-svgs/${getCardAssetName(parsed)}`}
                 alt={card}
                 className="w-28 h-auto" // Increased size from w-20 to w-28
               />
