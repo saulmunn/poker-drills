@@ -106,12 +106,12 @@ export default function MainGame() {
     if (!userGuess) return
 
     if (userGuess === correctHand) {
-      setFeedback('Correct!')
+      setFeedback('✅ Correct!')
       setTimeout(() => {
         generateNewProblem()
       }, 500)
     } else {
-      setFeedback(`Wrong. The correct answer is "${correctHand}". (Moving on in 8s.)`)
+      setFeedback(`❌ Wrong. The correct answer is "${correctHand}". (Moving on in 8s.)`)
       setTimeout(() => {
         generateNewProblem()
       }, 8000)
