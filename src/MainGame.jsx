@@ -11,6 +11,11 @@ for (let r of RANKS) {
   }
 }
 
+// Define the list of acceptable pocket combinations
+const ACCEPTABLE_POCKETS = [
+'AA', 'AKs', 'AQs', 'AJs', 'ATs', 'A9s', 'A8s', 'A7s', 'A6s', 'A5s', 'A4s', 'A3s', 'AKo', 'KK', 'KQs', 'KJs', 'KTs', 'K9s', 'K8s', 'K7s', 'K6s', 'K5s', 'K4s', 'AQo', 'KQo', 'QQ', 'QJs', 'QTs', 'Q9s', 'Q8s', 'Q7s', 'Q6s', 'Q5s', 'AJo', 'KJo', 'QJo', 'JJ', '99', '88', '77', '66', '55', '44', '33', '22'
+]
+
 // Randomly shuffle an array in place
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -63,6 +68,31 @@ function getCardAssetName({ rank, suit }) {
   return `${rankName}${suitName}.svg`
 }
 
+// **New Utility Function: Format Pocket Cards**
+function formatPocket(pocket) {
+  const [card1, card2] = pocket
+  const rank1 = card1.slice(0, -1)
+  const suit1 = card1.slice(-1)
+  const rank2 = card2.slice(0, -1)
+  const suit2 = card2.slice(-1)
+
+  // Determine if the pocket is suited or offsuit
+  const suited = suit1 === suit2 ? 's' : 'o'
+
+  // Sort the ranks based on predefined order
+  const sortedRanks = [rank1, rank2].sort((a, b) => {
+    const order = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
+    return order.indexOf(a) - order.indexOf(b)
+  })
+
+  // If both ranks are the same, return without suit indicator
+  if (sortedRanks[0] === sortedRanks[1]) {
+    return `${sortedRanks[1]}${sortedRanks[0]}`
+  }
+
+  return `${sortedRanks[1]}${sortedRanks[0]}${suited}`
+}
+
 export default function MainGame() {
   const [pocketCards, setPocketCards] = useState([])
   const [communityCards, setCommunityCards] = useState([])
@@ -83,22 +113,46 @@ export default function MainGame() {
   ]
 
   function generateNewProblem() {
-    const newDeck = [...FULL_DECK]
-    shuffle(newDeck)
-    const pocket = drawCards(newDeck, 2)
-    const community = drawCards(newDeck, 5)
-    const parsed = [...pocket, ...community].map(parseCard)
-    const detected = detectAnyExistingHands(parsed)
+    const MAX_RETRIES = 500
+    let attempts = 0
+    let isValidPocket = false
+    let pocket = []
+    let community = []
+    let parsed = []
+    let detected = null
 
-    setPocketCards(pocket)
-    setCommunityCards(community)
-    setCorrectHand(detected)
-    setUserGuess('')
-    setFeedback('')
+    while (attempts < MAX_RETRIES && !isValidPocket) {
+      attempts++
+      const newDeck = [...FULL_DECK]
+      shuffle(newDeck)
+      pocket = drawCards(newDeck, 2)
+      community = drawCards(newDeck, 5)
+      parsed = [...pocket, ...community].map(parseCard)
+      detected = detectAnyExistingHands(parsed)
+
+      // Format the pocket cards
+      const formattedPocket = formatPocket(pocket)
+
+      // Check if the formatted pocket is in the ACCEPTABLE_POCKETS list
+      if (ACCEPTABLE_POCKETS.includes(formattedPocket)) {
+        isValidPocket = true
+        setPocketCards(pocket)
+        setCommunityCards(community)
+        setCorrectHand(detected)
+        setUserGuess('')
+        setFeedback('')
+      }
+    }
+
+    if (!isValidPocket) {
+      // Reload the page if no acceptable pocket was found within the retry limit
+      window.location.reload()
+    }
   }
 
   useEffect(() => {
     generateNewProblem()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function handleSubmit(event) {
@@ -111,10 +165,10 @@ export default function MainGame() {
         generateNewProblem()
       }, 500)
     } else {
-      setFeedback(`❌ Wrong. The correct answer is "${correctHand}". (Moving on in 8s.)`)
+      setFeedback(`❌ Wrong. The correct answer is "${correctHand}". (Moving on in 5s.)`)
       setTimeout(() => {
         generateNewProblem()
-      }, 8000)
+      }, 5000)
     }
   }
 
