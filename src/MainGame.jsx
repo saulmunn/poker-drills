@@ -239,7 +239,7 @@ export default function MainGame() {
                 key={card}
                 src={`/card-svgs/${getCardAssetName(parsed)}`}
                 alt={card}
-                className="w-28 h-auto" // Increased size from w-20 to w-28
+                className="w-28 h-auto"
               />
             )
           })}
@@ -255,7 +255,7 @@ export default function MainGame() {
                 key={card}
                 src={`/card-svgs/${getCardAssetName(parsed)}`}
                 alt={card}
-                className="w-28 h-auto" // Increased size from w-20 to w-28
+                className="w-28 h-auto"
               />
             )
           })}
