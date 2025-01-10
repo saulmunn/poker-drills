@@ -223,7 +223,7 @@ export default function MainGame() {
   }
 
   return (
-    <div className="h-screen overflow-hidden bg-gray-100 flex items-center justify-center px-4 font-[Arial]">
+    <div className="h-auto overflow-hidden bg-gray-100 flex items-center justify-center px-4 font-[Arial]">
       <div className="relative max-w-full w-full bg-white shadow-md rounded-2xl p-10 text-center">
         <h1 className="text-3xl font-bold mb-4 text-gray-800">
           What's the best hand on the current board?
