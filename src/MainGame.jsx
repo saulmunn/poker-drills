@@ -223,13 +223,13 @@ export default function MainGame() {
   }
 
   return (
-    <div className="h-auto overflow-hidden bg-gray-100 flex items-center justify-center px-4 font-[Arial]">
+    <div className="h-auto bg-gray-100 flex items-center justify-center px-4 font-[Arial]">
       <div className="relative max-w-full w-full bg-white shadow-md rounded-2xl p-10 text-center">
         <h1 className="text-3xl font-bold mb-4 text-gray-800">
           What's the best hand on the current board?
         </h1>
 
-        {/* Community cards on top */}
+        {/* Community cards */}
         <div className="mb-2 text-gray-700 font-semibold">Community Cards</div>
         <div className="flex justify-center space-x-2 mb-4">
           {communityCards.map((card) => {
@@ -245,7 +245,7 @@ export default function MainGame() {
           })}
         </div>
 
-        {/* Pocket cards on bottom */}
+        {/* Pocket cards */}
         <div className="mb-2 text-gray-700 font-semibold">Pocket Cards</div>
         <div className="flex justify-center space-x-2 mb-4">
           {pocketCards.map((card) => {
@@ -262,7 +262,7 @@ export default function MainGame() {
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col items-center">
-          <div className="grid grid-cols-2 gap-2 mb-4 w-full">
+          <div className="grid grid-cols-3 gap-2 m-4 w-full">
             {possibleHands.map((hand) => (
               <label
                 key={hand}
